@@ -62,8 +62,8 @@ func _physics_process(delta):
 		speedMultiplier = 1
 		gravityMultiplier = 1
 		currentMat = Mat.STONE
-	if inLava == true:
-		if not Mat.AMBER:
+		if inLava == true:
+			#if not Mat.AMBER:
 			call_deferred("_reload_scene")
 	# Handle power upsd
 	var gravity = get_gravity()
@@ -92,6 +92,7 @@ func _physics_process(delta):
 			velocity += (gravity * gravityMultiplier) * FALL_GRAVITY_MULTIPLIER * delta
 		elif not Input.is_action_pressed("jump"):
 			velocity += gravity * LOW_JUMP_GRAVITY_MULTIPLIER * delta
+			
 		else:
 			velocity += gravity  * delta
 
@@ -100,7 +101,8 @@ func _physics_process(delta):
 		velocity.y = JUMP_VELOCITY
 		
 	if Input.is_action_just_released("jump") and velocity.y < 0:
-		velocity.y *= JUMP_CUT_MULTIPLIER
+		#velocity.y *= JUMP_CUT_MULTIPLIER
+		velocity.y = 1
 	# Get the input direction and handle the movement/deceleration.
 	var direction := Input.get_axis("left", "right")
 	if direction != 0:
