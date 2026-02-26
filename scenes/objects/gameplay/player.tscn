@@ -1,0 +1,44 @@
+[gd_scene load_steps=6 format=3 uid="uid://ckudr8chj1kgo"]
+
+[ext_resource type="Script" uid="uid://80kl10p8d3vr" path="res://scripts/player.gd" id="1_onrkg"]
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://sprites/icon.svg" id="2_i3pqv"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ovgbp"]
+radius = 131.4
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hqtel"]
+size = Vector2(120, 119)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_onrkg"]
+radius = 68.18358
+
+[node name="Player" type="CharacterBody2D" groups=["player"]]
+script = ExtResource("1_onrkg")
+
+[node name="Flame" type="Area2D" parent="." groups=["amber"]]
+
+[node name="Sprite2Dx" type="Sprite2D" parent="Flame"]
+visible = false
+modulate = Color(18.892157, 0, 0, 1)
+position = Vector2(-0.49999475, 0.4999962)
+scale = Vector2(1.6953125, 1.5546874)
+texture = ExtResource("2_i3pqv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Flame"]
+shape = SubResource("CircleShape2D_ovgbp")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_i3pqv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_hqtel")
+
+[node name="MatCheck" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="MatCheck"]
+shape = SubResource("CircleShape2D_onrkg")
+
+[connection signal="area_entered" from="Flame" to="." method="_on_flame_area_entered"]
+[connection signal="area_entered" from="MatCheck" to="." method="_on_mat_check_area_entered"]
+[connection signal="area_exited" from="MatCheck" to="." method="_on_mat_check_area_exited"]

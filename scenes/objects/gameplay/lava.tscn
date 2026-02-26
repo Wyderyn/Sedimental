@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://ddsryurg54fsi"]
+
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://sprites/icon.svg" id="1_34hvj"]
+[ext_resource type="Script" uid="uid://b6owm5p8p8p8c" path="res://scripts/lava.gd" id="1_gil3p"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gil3p"]
+size = Vector2(117.23843, 104.8145)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jefjt"]
+
+[node name="lava" type="StaticBody2D"]
+modulate = Color(1, 0.003921569, 0, 1)
+scale = Vector2(3.1218436, 0.5247369)
+script = ExtResource("1_gil3p")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_34hvj")
+
+[node name="Area2D" type="Area2D" parent="."]
+scale = Vector2(1.0744059, 1.1632521)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-0.96097785, 0.952856)
+scale = Vector2(0.9940806, 1.0119089)
+shape = SubResource("RectangleShape2D_gil3p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_jefjt")
+disabled = true
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]

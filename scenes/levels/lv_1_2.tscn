@@ -1,0 +1,70 @@
+[gd_scene load_steps=7 format=3 uid="uid://blgd8ukgeqd3f"]
+
+[ext_resource type="PackedScene" uid="uid://lfthqtfbkxtk" path="res://scenes/objects/enviornment/wall.tscn" id="1_nbqoc"]
+[ext_resource type="PackedScene" uid="uid://bylp2tvf6hcn4" path="res://scenes/objects/enviornment/floor.tscn" id="2_0rwbc"]
+[ext_resource type="PackedScene" uid="uid://dpohg2woqjaaw" path="res://scenes/objects/gameplay/floor_break.tscn" id="3_c42wf"]
+[ext_resource type="PackedScene" uid="uid://foswobgwptd4" path="res://scenes/objects/gameplay/exit.tscn" id="4_t2wg6"]
+[ext_resource type="PackedScene" uid="uid://ckudr8chj1kgo" path="res://scenes/objects/gameplay/player.tscn" id="5_bm4na"]
+
+[sub_resource type="Environment" id="Environment_noxrx"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(1150, 653)
+zoom = Vector2(0.5, 0.5)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_noxrx")
+
+[node name="Wall" parent="WorldEnvironment" instance=ExtResource("1_nbqoc")]
+position = Vector2(0, 617.99994)
+
+[node name="Wall2" parent="WorldEnvironment" instance=ExtResource("1_nbqoc")]
+position = Vector2(0, 706)
+
+[node name="Wall3" parent="WorldEnvironment" instance=ExtResource("1_nbqoc")]
+position = Vector2(1836, 454.00003)
+scale = Vector2(-5.836485, 5.8821306)
+
+[node name="Wall6" parent="WorldEnvironment" instance=ExtResource("1_nbqoc")]
+position = Vector2(1718.9999, 853.00006)
+scale = Vector2(-7.2505403, 1.1215707)
+
+[node name="Wall7" parent="WorldEnvironment" instance=ExtResource("1_nbqoc")]
+position = Vector2(1252, 913)
+scale = Vector2(-1.2394183, 2.0207052)
+
+[node name="Wall8" parent="WorldEnvironment" instance=ExtResource("1_nbqoc")]
+position = Vector2(640.00006, 1035)
+scale = Vector2(2.564287, 11.74497)
+
+[node name="Wall4" parent="WorldEnvironment" instance=ExtResource("1_nbqoc")]
+position = Vector2(2240.9998, 747)
+
+[node name="Wall5" parent="WorldEnvironment" instance=ExtResource("1_nbqoc")]
+position = Vector2(2238, 571)
+
+[node name="Floor" parent="WorldEnvironment" instance=ExtResource("2_0rwbc")]
+position = Vector2(637, 6.0000005)
+
+[node name="Floor4" parent="WorldEnvironment" instance=ExtResource("2_0rwbc")]
+position = Vector2(637, 1214)
+
+[node name="Floor2" parent="WorldEnvironment" instance=ExtResource("2_0rwbc")]
+position = Vector2(2112, 6)
+
+[node name="Floor3" parent="WorldEnvironment" instance=ExtResource("2_0rwbc")]
+position = Vector2(2112, 1214)
+
+[node name="FloorBreak" parent="WorldEnvironment" instance=ExtResource("3_c42wf")]
+position = Vector2(984.00006, 1009)
+scale = Vector2(3.1272144, 0.45807442)
+breakVelocity = 40.0
+
+[node name="Exit" parent="." instance=ExtResource("4_t2wg6")]
+position = Vector2(2052, 1076)
+level = 2
+
+[node name="Player" parent="." instance=ExtResource("5_bm4na")]
+position = Vector2(631, 211)

@@ -1,0 +1,80 @@
+[gd_scene load_steps=7 format=3 uid="uid://bx71objn32bcv"]
+
+[ext_resource type="PackedScene" uid="uid://bylp2tvf6hcn4" path="res://scenes/objects/enviornment/floor.tscn" id="1_lq5cr"]
+[ext_resource type="PackedScene" uid="uid://lfthqtfbkxtk" path="res://scenes/objects/enviornment/wall.tscn" id="2_cechb"]
+[ext_resource type="PackedScene" uid="uid://foswobgwptd4" path="res://scenes/objects/gameplay/exit.tscn" id="3_dqr0b"]
+[ext_resource type="PackedScene" uid="uid://ckudr8chj1kgo" path="res://scenes/objects/gameplay/player.tscn" id="4_qsgtp"]
+
+[sub_resource type="Environment" id="Environment_bdf7w"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_1e78s"]
+
+[node name="LV1_1" type="Node2D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_bdf7w")
+camera_attributes = SubResource("CameraAttributesPractical_1e78s")
+
+[node name="Floor" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
+position = Vector2(238.99998, -220.00002)
+
+[node name="Floor4" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
+position = Vector2(1710.0001, -218)
+
+[node name="Floor2" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
+position = Vector2(248.00006, 1081)
+
+[node name="Floor5" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
+position = Vector2(153.00002, 995)
+scale = Vector2(0.6585512, 1.5078713)
+
+[node name="Floor7" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
+position = Vector2(855, 575)
+scale = Vector2(0.53855366, 1.5078713)
+
+[node name="Floor8" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
+position = Vector2(1252.9999, 455.00003)
+scale = Vector2(0.31010127, 1.3342808)
+
+[node name="Floor9" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
+position = Vector2(1639, 734)
+scale = Vector2(0.6585512, 1.5078713)
+
+[node name="Floor6" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
+position = Vector2(-224.99997, 579.0001)
+scale = Vector2(0.6585512, 1.5078713)
+
+[node name="Floor10" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
+position = Vector2(451.9999, 298.0001)
+scale = Vector2(0.6585512, 1.5078713)
+
+[node name="Floor3" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
+position = Vector2(1702, 1081)
+
+[node name="Wall" parent="WorldEnvironment" instance=ExtResource("2_cechb")]
+position = Vector2(-437.99997, 317.99997)
+
+[node name="Wall3" parent="WorldEnvironment" instance=ExtResource("2_cechb")]
+position = Vector2(1756, 396)
+
+[node name="Wall5" parent="WorldEnvironment" instance=ExtResource("2_cechb")]
+position = Vector2(682.0001, 132.00003)
+
+[node name="Wall4" parent="WorldEnvironment" instance=ExtResource("2_cechb")]
+position = Vector2(1754, 1457)
+
+[node name="Wall2" parent="WorldEnvironment" instance=ExtResource("2_cechb")]
+position = Vector2(-436, 1377.9999)
+
+[node name="Exit" parent="." instance=ExtResource("3_dqr0b")]
+position = Vector2(868, 469)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(659, 454)
+rotation = 3.1415925
+scale = Vector2(26.410706, -0.7336239)
+zoom = Vector2(0.5, 0.5)
+
+[node name="Player" parent="." instance=ExtResource("4_qsgtp")]
+position = Vector2(-276, 1003)
+currentMat = 1

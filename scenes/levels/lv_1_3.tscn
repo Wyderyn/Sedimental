@@ -1,0 +1,89 @@
+[gd_scene load_steps=7 format=3 uid="uid://dfj56usel3lq0"]
+
+[ext_resource type="PackedScene" uid="uid://foswobgwptd4" path="res://scenes/objects/gameplay/exit.tscn" id="1_02dr8"]
+[ext_resource type="PackedScene" uid="uid://ddsryurg54fsi" path="res://scenes/objects/gameplay/lava.tscn" id="2_niqyd"]
+[ext_resource type="PackedScene" uid="uid://bylp2tvf6hcn4" path="res://scenes/objects/enviornment/floor.tscn" id="3_god28"]
+[ext_resource type="PackedScene" uid="uid://lfthqtfbkxtk" path="res://scenes/objects/enviornment/wall.tscn" id="4_8q0d3"]
+[ext_resource type="PackedScene" uid="uid://ckudr8chj1kgo" path="res://scenes/objects/gameplay/player.tscn" id="6_qbhcl"]
+
+[sub_resource type="Environment" id="Environment_fglb2"]
+
+[node name="lv_1_3" type="Node2D"]
+
+[node name="Exit" parent="." instance=ExtResource("1_02dr8")]
+position = Vector2(248, 250)
+level = 3
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(1173, 653)
+zoom = Vector2(0.5, 0.5)
+
+[node name="lava" parent="." instance=ExtResource("2_niqyd")]
+position = Vector2(1131, 1280.0001)
+scale = Vector2(17.97177, 1.578998)
+
+[node name="lava2" parent="." instance=ExtResource("2_niqyd")]
+position = Vector2(2193.9998, 587)
+scale = Vector2(1.0509284, 12.092202)
+
+[node name="lava4" parent="." instance=ExtResource("2_niqyd")]
+position = Vector2(1675.0001, 1098.0001)
+scale = Vector2(2.3335547, 1.8021636)
+
+[node name="lava3" parent="." instance=ExtResource("2_niqyd")]
+position = Vector2(1156.9999, 413)
+scale = Vector2(3.2571392, 4.9972634)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_fglb2")
+
+[node name="Floor" parent="WorldEnvironment" instance=ExtResource("3_god28")]
+position = Vector2(756.00006, 0)
+
+[node name="Floor2" parent="WorldEnvironment" instance=ExtResource("3_god28")]
+position = Vector2(1977.0002, 0)
+
+[node name="Floor5" parent="WorldEnvironment" instance=ExtResource("3_god28")]
+position = Vector2(679, 1270)
+
+[node name="Floor6" parent="WorldEnvironment" instance=ExtResource("3_god28")]
+position = Vector2(2051, 1270)
+
+[node name="Floor3" parent="WorldEnvironment" instance=ExtResource("3_god28")]
+position = Vector2(496.00012, 67.00006)
+scale = Vector2(0.24606715, 8.646737)
+
+[node name="Floor7" parent="WorldEnvironment" instance=ExtResource("3_god28")]
+position = Vector2(826, 892)
+scale = Vector2(0.2587139, 1.799541)
+
+[node name="Floor8" parent="WorldEnvironment" instance=ExtResource("3_god28")]
+position = Vector2(1968.0001, 1123)
+scale = Vector2(0.41871148, 1.239541)
+
+[node name="Floor9" parent="WorldEnvironment" instance=ExtResource("3_god28")]
+position = Vector2(201.00002, 897)
+scale = Vector2(0.6630853, 1.325504)
+
+[node name="Floor4" parent="WorldEnvironment" instance=ExtResource("3_god28")]
+position = Vector2(1324, 1119)
+scale = Vector2(-0.7334701, 1.1372888)
+
+[node name="Wall" parent="WorldEnvironment" instance=ExtResource("4_8q0d3")]
+position = Vector2(53.999996, 513.99994)
+
+[node name="Wall5" parent="WorldEnvironment" instance=ExtResource("4_8q0d3")]
+position = Vector2(1145.0002, 198)
+scale = Vector2(-1.3734516, 7.0429835)
+
+[node name="Wall2" parent="WorldEnvironment" instance=ExtResource("4_8q0d3")]
+position = Vector2(54, 805)
+
+[node name="Wall3" parent="WorldEnvironment" instance=ExtResource("4_8q0d3")]
+position = Vector2(2264.9998, 805)
+
+[node name="Wall4" parent="WorldEnvironment" instance=ExtResource("4_8q0d3")]
+position = Vector2(2262, 434.00003)
+
+[node name="Player" parent="." instance=ExtResource("6_qbhcl")]
+position = Vector2(2014, 305)

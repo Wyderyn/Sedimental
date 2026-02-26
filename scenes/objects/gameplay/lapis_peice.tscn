@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bvfkpidksxqom"]
+
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://sprites/icon.svg" id="1_u82fj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3gsjc"]
+size = Vector2(148, 140)
+
+[node name="lapis_peice" type="Sprite2D"]
+modulate = Color(0.34174308, 0.22217554, 1, 1)
+texture = ExtResource("1_u82fj")
+
+[node name="Area2D" type="Area2D" parent="." groups=["lapis"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(1, 2)
+shape = SubResource("RectangleShape2D_3gsjc")

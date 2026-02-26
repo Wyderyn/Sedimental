@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://b2y6ux41pmquo"]
+
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://sprites/icon.svg" id="1_jmvd5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xlmk8"]
+size = Vector2(137, 133)
+
+[node name="stone_piece" type="Sprite2D"]
+texture = ExtResource("1_jmvd5")
+
+[node name="Area2D" type="Area2D" parent="." groups=["stone"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-1.5, 0.5)
+shape = SubResource("RectangleShape2D_xlmk8")

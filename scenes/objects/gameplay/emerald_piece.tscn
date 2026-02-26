@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://daydh88igmh1y"]
+
+[ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://sprites/icon.svg" id="1_bmnth"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_seg45"]
+size = Vector2(138, 135)
+
+[node name="emerald_piece" type="Sprite2D"]
+modulate = Color(3.7301331e-06, 0.6150995, 0.22884834, 1)
+texture = ExtResource("1_bmnth")
+
+[node name="Area2D" type="Area2D" parent="." groups=["emerald"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_seg45")
