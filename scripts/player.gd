@@ -23,7 +23,7 @@ extends CharacterBody2D
 # How fast velocity.x returns to 0 when no input is pressed.
 # Controls sliding vs tight movement feel.
 
-
+var canJump = true
 # =========================
 # JUMP CONSTANTS
 # =========================
@@ -35,7 +35,8 @@ extends CharacterBody2D
 # Reserved variable for advanced jump control.
 # Currently not used because jump cutting is handled manually.
 
-
+@export var cyoteTime = 50
+@export var cyote= 50
 # =========================
 # GRAVITY MODIFIERS
 # =========================
@@ -180,8 +181,13 @@ func _color_change():
 	if checkEmerald == true or currentMat == Mat.EMERALD:
 		# Emerald form texture
 		$Sprite2D.texture = load("res://sprites/Player/Geo(Emerald) (1).png")
-
-
+	if is_on_floor():
+		canJump = true
+		cyoteTime = cyote
+	if not is_on_floor():
+		cyoteTime -= 1
+	if cyoteTime <= 0:
+		canJump = false
 # =========================
 # MAIN PHYSICS LOOP
 # =========================
@@ -276,6 +282,8 @@ func _physics_process(delta):
 		speedMultiplier = 1
 		gravityMultiplier = 1
 		currentMat = Mat.STONE
+		if inLava:
+			_reload_scene()
 		# Reset player completely to default state.
 
 
@@ -383,7 +391,7 @@ func _physics_process(delta):
 	# =========================
 	# JUMP INPUT
 	# =========================
-	if Input.is_action_just_pressed("jump") and is_on_floor():
+	if Input.is_action_just_pressed("jump") and canJump:
 
 		velocity.y = JUMP_VELOCITY
 		# Apply instant upward force.
