@@ -1,132 +1,150 @@
 extends CharacterBody2D
-# This script controls a 2D player character using Godot's CharacterBody2D.
-# CharacterBody2D provides built-in physics movement using the velocity variable
-# and functions like move_and_slide().
-# This player also supports multiple MATERIAL FORMS, each with unique abilities.
+# This script controls the player character using Godot's CharacterBody2D.
+# CharacterBody2D is designed for platformer-style movement and includes:
+# • A built-in velocity variable (Vector2)
+# • move_and_slide() for collision-aware movement
+# • Floor detection (is_on_floor)
+# This character can transform into different MATERIAL FORMS,
+# each granting unique physics and abilities.
 
 
 # =========================
 # MOVEMENT CONSTANTS
 # =========================
 @export var SPEED = 500.0
-# Base horizontal speed before modifiers.
+# Maximum horizontal movement speed before modifiers.
+# Final speed = SPEED * speedMultiplier
 
 @export var ACCELERATION = 10000.0
-# Rate of increasing velocity toward target speed.
+# How fast velocity.x moves toward the target speed.
+# Higher values = more responsive movement.
 
 @export var DECELERATION = 3500.0
-# Rate of slowing down when no input is provided.
+# How fast velocity.x returns to 0 when no input is pressed.
+# Controls sliding vs tight movement feel.
 
 
 # =========================
 # JUMP CONSTANTS
 # =========================
 @export var JUMP_VELOCITY = -1000.0
-# Instant upward force applied when jumping.
+# Instant vertical velocity applied when jumping.
+# Negative value because upward direction in Godot is negative Y.
 
 @export var JUMP_CUT_MULTIPLIER = 1.1
-# Reserved variable for scaling upward velocity when jump is released early.
-# Currently unused because a direct velocity override is used instead.
+# Reserved variable for advanced jump control.
+# Currently not used because jump cutting is handled manually.
 
 
 # =========================
 # GRAVITY MODIFIERS
 # =========================
 @export var FALL_GRAVITY_MULTIPLIER = 3
-# Makes falling feel heavier and faster than rising.
-# Improves responsiveness and platformer feel.
+# Multiplies gravity while falling downward.
+# Makes falling faster than rising for better platformer feel.
 
 @export var LOW_JUMP_GRAVITY_MULTIPLIER = 5
-# Makes short hops possible when releasing jump early.
+# Multiplies gravity when jump button is released early.
+# Allows short, controlled jumps instead of always full height.
 
 
 # =========================
 # DYNAMIC MODIFIERS (change during gameplay)
 # =========================
 @export var speedMultiplier := 1.0
-# Multiplies final horizontal speed.
-# Used by abilities to slow or alter mobility.
+# Multiplies horizontal speed dynamically.
+# Example:
+# 1.0 = normal speed
+# 0.5 = half speed
+# 2.0 = double speed
 
 @export var gravityMultiplier := 1.0
-# Multiplies gravity strength dynamically.
-# Used for slam ability or float effects.
+# Multiplies gravity dynamically.
+# Used for slam ability (increase gravity)
+# and float abilities (reduce gravity)
 
 
 # =========================
 # MATERIAL ENUM
 # =========================
 enum Mat {STONE, AMBER, LAPIS, EMERALD}
-# Defines material IDs as integers internally:
+# Enum assigns integer IDs automatically:
 # STONE   = 0
 # AMBER   = 1
 # LAPIS   = 2
 # EMERALD = 3
-# Using enum improves readability and prevents magic numbers.
+# Using enum avoids confusing "magic numbers"
+# and makes code readable.
+
 enum Facing {LEFT, RIGHT}
+# Tracks which direction the player is facing visually.
+
 @export var isFacing = Facing.RIGHT
+# Default facing direction when game starts.
+
 @export var currentMat = Mat.STONE
-# Tracks the currently active material.
-# Determines ability behavior, resistances, and visuals.
+# Player starts in STONE form by default.
+# This determines which abilities are available.
 
 
 # =========================
 # POWER STATE VARIABLES
 # =========================
 var heavy = false
-# True only during STONE slam ability.
-# Used by breakable floors to detect slam impact.
+# TRUE only during STONE slam ability.
+# Breakable floors check this variable to know
+# whether player impact should destroy them.
 
 var flameOn = false
-# True while AMBER flame ability is active.
+# TRUE while flame ability is active.
 # Enables flame collision and visuals.
 
 var flameTime = 3
-# Remaining flame duration countdown timer.
+# Remaining seconds before flame ability ends.
 
 const flameMax = 3
-# Used to reset flameTime after cooldown ends.
+# Used to reset flameTime after cooldown.
 
 
 var GrowOn = false
-# True while EMERALD growth ability is active.
-# Enables growth collision and visuals.
+# TRUE while emerald growth ability is active.
 
 var GrowTime = 3
-# Remaining growth ability duration timer.
+# Remaining seconds of growth ability.
 
 const GrowMax = 3
-# Reserved maximum duration for growth ability reset.
+# Maximum growth ability duration.
 
 
 var cooldown = 0
-# Remaining cooldown time before next ability use allowed.
+# Countdown timer until ability can be used again.
 
 var onCooldown = false
-# Prevents abilities from being spammed.
+# Prevents player from activating abilities repeatedly.
 
 const cooldownMax = 6
-# Total cooldown duration after using an ability.
+# Total cooldown duration after ability use.
 
 
 # =========================
 # MATERIAL DETECTION FLAGS
 # =========================
 var checkStone = false
-# True while overlapping a stone material zone Area2D.
+# TRUE while player is touching a stone material zone.
 
 var checkLapis = false
-# True while overlapping lapis zone.
+# TRUE while touching lapis zone.
 
 var checkEmerald = false
-# True while overlapping emerald zone.
+# TRUE while touching emerald zone.
 
 var checkAmber = false
-# True while overlapping amber zone.
+# TRUE while touching amber zone.
 
 
 var inLava = false
-# True while physically inside lava Area2D.
-# Used to determine whether player should die when protection ends.
+# TRUE if player is inside lava area.
+# Used to determine death conditions.
 
 
 # =========================
@@ -134,8 +152,8 @@ var inLava = false
 # =========================
 func _reload_scene():
 	get_tree().reload_current_scene()
-	# Reloads entire scene instantly.
-	# Used for death, reset, or failure states.
+	# Completely reloads the current level scene.
+	# This resets player position, objects, and all variables.
 
 
 # =========================
@@ -143,20 +161,24 @@ func _reload_scene():
 # =========================
 func _color_change():
 
-	# This function prioritizes ANY detected material OR current material.
-	# Because these are separate IF statements (not elif),
-	# the LAST matching condition determines final color.
+	# This updates the player sprite based on material.
+	# Because these are separate IF statements,
+	# the LAST true condition determines final texture.
 
 	if checkStone == true or currentMat == Mat.STONE:
+		# If player is stone OR touching stone zone
 		$Sprite2D.texture = load("res://sprites/Player/Geo(Stone) (1).png")
 
 	if checkAmber == true or currentMat == Mat.AMBER:
+		# Amber form texture
 		$Sprite2D.texture = load("res://sprites/Player/Geo(Amber) (1).png")
 
 	if checkLapis == true or currentMat == Mat.LAPIS:
+		# Lapis form texture
 		$Sprite2D.texture = load("res://sprites/Player/Geo(Lapis) (1).png")
 
 	if checkEmerald == true or currentMat == Mat.EMERALD:
+		# Emerald form texture
 		$Sprite2D.texture = load("res://sprites/Player/Geo(Emerald) (1).png")
 
 
@@ -166,31 +188,40 @@ func _color_change():
 func _physics_process(delta):
 
 	_color_change()
-	# Ensures material color updates immediately if material changes mid-frame.
+	# Ensures visual sprite always matches current material.
+
 	if Input.is_action_pressed("right"): 
 		isFacing = Facing.RIGHT
+		# Update facing direction based on input
+
 	elif Input.is_action_pressed("left"): 
 		isFacing = Facing.LEFT
 
+
 	$Sprite2D.flip_h = isFacing == Facing.LEFT
+	# Flips sprite horizontally when facing left.
+	# This avoids needing separate left/right sprites.
+
+
+	# =========================
 	# COOLDOWN TIMER
 	# =========================
 	if onCooldown:
 
 		cooldown -= delta
-		# Countdown happens in real-time seconds.
+		# delta = time since last frame in seconds
+		# This creates real-time countdown.
 
 		if cooldown <= 0:
 
 			onCooldown = false
-			# Player can use abilities again.
+			# Ability can now be used again.
 
 			cooldown = 0
-			# Prevent negative timer values.
+			# Prevent negative values.
 
 			flameTime = flameMax
-			# Reset flame duration ready for next use.
-			# (Note: GrowTime reset is not here, so growth depends on initial value)
+			# Reset flame ability timer.
 
 
 	# =========================
@@ -199,20 +230,21 @@ func _physics_process(delta):
 	if flameOn:
 
 		flameTime -= delta
-		# Counts down ability duration.
+		# Reduce ability duration timer.
 
 		$Flame/Sprite2Dx.visible = true
-		# Enables visual indicator of flame ability.
+		# Show flame visual.
 
 		$Flame/CollisionShape2D.disabled = false
-		# Enables Area2D collision used to burn plants or interact with objects.
+		# Enable hitbox that burns plants.
 
 	else:
 
 		$Flame/Sprite2Dx.visible = false
+		# Hide flame visual.
 
 		$Flame/CollisionShape2D.disabled = true
-		# Prevents unintended burning when flame inactive.
+		# Disable burn collision.
 
 
 	# =========================
@@ -221,13 +253,12 @@ func _physics_process(delta):
 	if GrowOn:
 
 		GrowTime -= delta
-		# Countdown for emerald growth ability.
 
 		$Growth/Sprite2Dx.visible = true
-		# Shows growth visual effect.
+		# Show growth visual effect.
 
 		$Growth/CollisionShape2D.disabled = false
-		# Enables growth interaction collider.
+		# Enable growth interaction.
 
 	else:
 
@@ -245,7 +276,7 @@ func _physics_process(delta):
 		speedMultiplier = 1
 		gravityMultiplier = 1
 		currentMat = Mat.STONE
-		# Player always reverts to default stone state after ability ends.
+		# Reset player completely to default state.
 
 
 	if GrowTime <= 0:
@@ -256,9 +287,8 @@ func _physics_process(delta):
 		currentMat = Mat.STONE
 
 		if inLava == true:
-			# Important safety mechanic:
-			# If player was surviving lava only due to ability,
-			# losing ability instantly kills them.
+			# If emerald protection ends while in lava,
+			# player dies instantly.
 			call_deferred("_reload_scene")
 
 
@@ -266,8 +296,7 @@ func _physics_process(delta):
 	# POWER-UP ABILITY LOGIC
 	# =========================
 	var gravity = get_gravity()
-	# Retrieves project gravity setting dynamically.
-	# Allows global gravity changes without modifying script.
+	# Gets project gravity from physics settings.
 
 
 	if currentMat == Mat.STONE:
@@ -278,10 +307,11 @@ func _physics_process(delta):
 			cooldown = cooldownMax
 
 			gravityMultiplier = 5.0
-			# Massive gravity increase creates slam effect.
+			# Increase gravity massively
+			# Forces player downward quickly.
 
 			heavy = true
-			# Used by breakable floors to detect slam state.
+			# Signals breakable floors.
 
 
 	if currentMat == Mat.AMBER:
@@ -292,12 +322,13 @@ func _physics_process(delta):
 			cooldown = cooldownMax
 
 			flameOn = true
+			# Activate flame ability.
 
 			speedMultiplier = 0.5
-			# Slows player to balance offensive ability.
+			# Reduce speed for balance.
 
 			gravityMultiplier = 0.5
-			# Creates floatier movement feeling.
+			# Makes player float slightly.
 
 			print("FLAME ON!!!")
 
@@ -310,7 +341,7 @@ func _physics_process(delta):
 			cooldown = cooldownMax
 
 			GrowOn = true
-			# Enables growth interaction system.
+			# Activate growth ability.
 
 			speedMultiplier = 0.5
 
@@ -325,10 +356,10 @@ func _physics_process(delta):
 	if heavy == true and is_on_floor():
 
 		gravityMultiplier = 1.0
-		# Restore normal gravity once slam finishes.
+		# Restore normal gravity.
 
 		heavy = false
-		# Prevents permanent heavy state.
+		# Slam finished.
 
 
 	# =========================
@@ -337,15 +368,15 @@ func _physics_process(delta):
 	if not is_on_floor():
 
 		if velocity.y > 0:
-			# Falling
+			# Player is falling downward
 			velocity += (gravity * gravityMultiplier) * FALL_GRAVITY_MULTIPLIER * delta
 
 		elif not Input.is_action_pressed("jump"):
-			# Jump released early
+			# Jump button released early
 			velocity += gravity * LOW_JUMP_GRAVITY_MULTIPLIER * delta
 
 		else:
-			# Rising normally
+			# Normal upward motion
 			velocity += gravity * delta
 
 
@@ -355,20 +386,20 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 
 		velocity.y = JUMP_VELOCITY
+		# Apply instant upward force.
 
 
 	if Input.is_action_just_released("jump") and velocity.y < 0:
 
-		# Immediately cancels upward velocity.
-		# This creates sharp, responsive short jumps.
 		velocity.y = 1
+		# Cuts jump height instantly.
 
 
 	# =========================
 	# HORIZONTAL MOVEMENT
 	# =========================
-
 	var direction := Input.get_axis("left", "right")
+	# Returns value between −1 and +1
 
 	if direction != 0:
 
@@ -379,6 +410,7 @@ func _physics_process(delta):
 			targetSpeed,
 			ACCELERATION * delta
 		)
+		# Smooth acceleration.
 
 	else:
 
@@ -387,7 +419,7 @@ func _physics_process(delta):
 			0,
 			DECELERATION * delta
 		)
-
+		# Smooth stop.
 
 
 	# =========================
@@ -402,9 +434,6 @@ func _physics_process(delta):
 	# MATERIAL SWITCH INPUT
 	# =========================
 	if Input.is_action_just_pressed("switch"):
-
-		# Player switches to whichever material zone they are currently touching.
-		# Multiple zones overlapping means last condition wins.
 
 		if checkStone == true:
 			currentMat = Mat.STONE
@@ -427,15 +456,15 @@ func _physics_process(delta):
 	# FINAL PHYSICS MOVE
 	# =========================
 	move_and_slide()
-	# Applies velocity, handles collisions, sliding, and floor detection.
+	# Moves character using velocity
+	# Handles collision automatically
+	# Updates floor detection
 
 
 # =========================
 # MATERIAL DETECTION SIGNALS
 # =========================
 func _on_mat_check_area_entered(area):
-
-	# These detect proximity to material shrines, crystals, or zones.
 
 	if area.is_in_group("stone"):
 		checkStone = true
@@ -471,4 +500,4 @@ func _on_mat_check_area_exited(area):
 func _ready() -> void:
 
 	_color_change()
-	# Ensures correct visual state immediately when scene loads.
+	# Ensures correct sprite appears immediately when scene starts.
