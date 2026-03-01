@@ -19,70 +19,82 @@ camera_attributes = SubResource("CameraAttributesPractical_1e78s")
 
 [node name="Floor" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
 position = Vector2(238.99998, -220.00002)
+scale = Vector2(2.8470488, 1.3752949)
+
+[node name="Floor11" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
+position = Vector2(-1109, -231)
+scale = Vector2(2.8470488, 1.3752949)
 
 [node name="Floor4" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
 position = Vector2(1710.0001, -218)
+scale = Vector2(2.8470488, 1.3752949)
 
 [node name="Floor2" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
-position = Vector2(248.00006, 1081)
+position = Vector2(554, 1544)
+scale = Vector2(2.8470488, 1.3752949)
+
+[node name="Floor12" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
+position = Vector2(-947, 1548)
+scale = Vector2(2.8470488, 1.3752949)
 
 [node name="Floor5" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
-position = Vector2(153.00002, 995)
-scale = Vector2(0.6585512, 1.5078713)
+position = Vector2(477.99997, 1393)
+scale = Vector2(1.4548353, 2.594745)
 
 [node name="Floor7" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
-position = Vector2(855, 575)
-scale = Vector2(0.53855366, 1.5078713)
+position = Vector2(858.99994, 277.99997)
+scale = Vector2(0.5479812, 1.5147476)
 
 [node name="Floor8" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
-position = Vector2(1252.9999, 455.00003)
-scale = Vector2(0.31010127, 1.3342808)
+position = Vector2(1202, 421)
+scale = Vector2(0.4694505, 1.8880689)
 
 [node name="Floor9" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
-position = Vector2(1639, 734)
-scale = Vector2(0.6585512, 1.5078713)
+position = Vector2(1596, 619)
+scale = Vector2(1.196346, 1.7027843)
 
 [node name="Floor6" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
-position = Vector2(-224.99997, 579.0001)
-scale = Vector2(0.6585512, 1.5078713)
+position = Vector2(-668.00006, 738)
+scale = Vector2(0.67007935, 1.5147476)
 
 [node name="Floor10" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
-position = Vector2(451.9999, 298.0001)
-scale = Vector2(0.6585512, 1.5078713)
+position = Vector2(447.99997, 532)
+scale = Vector2(0.67007935, 1.5147476)
 
 [node name="Floor3" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
-position = Vector2(1702, 1081)
+position = Vector2(2020, 1532)
+scale = Vector2(2.8470488, 1.3752949)
 
 [node name="Wall" parent="WorldEnvironment" instance=ExtResource("2_cechb")]
-position = Vector2(-437.99997, 317.99997)
+position = Vector2(-863, 356)
+scale = Vector2(-0.9272717, 8.32394)
 
 [node name="Wall3" parent="WorldEnvironment" instance=ExtResource("2_cechb")]
-position = Vector2(1756, 396)
+position = Vector2(2504, 385)
+scale = Vector2(-0.9272717, 8.32394)
 
 [node name="Wall5" parent="WorldEnvironment" instance=ExtResource("2_cechb")]
 position = Vector2(682.0001, 132.00003)
+scale = Vector2(-0.9272717, 8.32394)
 
 [node name="Wall4" parent="WorldEnvironment" instance=ExtResource("2_cechb")]
-position = Vector2(1754, 1457)
+position = Vector2(2529, 1449)
+scale = Vector2(-0.9240833, 8.32394)
 
 [node name="Wall2" parent="WorldEnvironment" instance=ExtResource("2_cechb")]
-position = Vector2(-436, 1377.9999)
+position = Vector2(-865, 1408)
+scale = Vector2(-0.9272717, 8.32394)
 
 [node name="plant" parent="WorldEnvironment" instance=ExtResource("3_qsgtp")]
-position = Vector2(1634, 1014)
+position = Vector2(2208, 1335)
+scale = Vector2(3.9408274, 2.9498153)
 
 [node name="emerald_piece" parent="WorldEnvironment" instance=ExtResource("4_se6fr")]
-position = Vector2(169, 929)
+position = Vector2(507, 1255)
 
 [node name="Exit" parent="." instance=ExtResource("3_dqr0b")]
-position = Vector2(868, 469)
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(659, 454)
-rotation = 3.1415925
-scale = Vector2(26.410706, -0.7336239)
-zoom = Vector2(0.5, 0.5)
+position = Vector2(872, 139)
 
 [node name="Player" parent="." instance=ExtResource("4_qsgtp")]
-position = Vector2(-276, 1003)
+position = Vector2(-345, 1372)
 currentMat = 1

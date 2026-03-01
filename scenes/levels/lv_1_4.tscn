@@ -15,10 +15,6 @@
 position = Vector2(1163, 847)
 level = 3
 
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(1173, 653)
-zoom = Vector2(0.5, 0.5)
-
 [node name="lava2" parent="." instance=ExtResource("2_idq50")]
 position = Vector2(2193.9998, 587)
 scale = Vector2(1.0509284, 12.092202)

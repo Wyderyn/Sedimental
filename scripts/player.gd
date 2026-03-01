@@ -8,23 +8,23 @@ extends CharacterBody2D
 # =========================
 # MOVEMENT CONSTANTS
 # =========================
-const SPEED = 500.0
+@export var SPEED = 500.0
 # Base horizontal speed before modifiers.
 
-const ACCELERATION = 10000.0
+@export var ACCELERATION = 10000.0
 # Rate of increasing velocity toward target speed.
 
-const DECELERATION = 3500.0
+@export var DECELERATION = 3500.0
 # Rate of slowing down when no input is provided.
 
 
 # =========================
 # JUMP CONSTANTS
 # =========================
-const JUMP_VELOCITY = -1000.0
+@export var JUMP_VELOCITY = -1000.0
 # Instant upward force applied when jumping.
 
-const JUMP_CUT_MULTIPLIER = 1.1
+@export var JUMP_CUT_MULTIPLIER = 1.1
 # Reserved variable for scaling upward velocity when jump is released early.
 # Currently unused because a direct velocity override is used instead.
 
@@ -32,22 +32,22 @@ const JUMP_CUT_MULTIPLIER = 1.1
 # =========================
 # GRAVITY MODIFIERS
 # =========================
-const FALL_GRAVITY_MULTIPLIER = 3
+@export var FALL_GRAVITY_MULTIPLIER = 3
 # Makes falling feel heavier and faster than rising.
 # Improves responsiveness and platformer feel.
 
-const LOW_JUMP_GRAVITY_MULTIPLIER = 5
+@export var LOW_JUMP_GRAVITY_MULTIPLIER = 5
 # Makes short hops possible when releasing jump early.
 
 
 # =========================
 # DYNAMIC MODIFIERS (change during gameplay)
 # =========================
-var speedMultiplier := 1.0
+@export var speedMultiplier := 1.0
 # Multiplies final horizontal speed.
 # Used by abilities to slow or alter mobility.
 
-var gravityMultiplier := 1.0
+@export var gravityMultiplier := 1.0
 # Multiplies gravity strength dynamically.
 # Used for slam ability or float effects.
 

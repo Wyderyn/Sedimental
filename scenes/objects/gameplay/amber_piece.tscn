@@ -7,6 +7,7 @@ size = Vector2(153, 147)
 
 [node name="amber_piece" type="Sprite2D"]
 modulate = Color(0.969258, 0.5436068, 1.540184e-06, 1)
+scale = Vector2(2, 2)
 texture = ExtResource("1_sxil4")
 
 [node name="Area2D" type="Area2D" parent="." groups=["amber"]]
