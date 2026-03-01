@@ -2,115 +2,131 @@ extends CharacterBody2D
 # This script controls a 2D player character using Godot's CharacterBody2D.
 # CharacterBody2D provides built-in physics movement using the velocity variable
 # and functions like move_and_slide().
+# This player also supports multiple MATERIAL FORMS, each with unique abilities.
 
 
 # =========================
 # MOVEMENT CONSTANTS
 # =========================
 const SPEED = 500.0
-# The maximum horizontal movement speed of the player (pixels per second).
+# Base horizontal speed before modifiers.
 
 const ACCELERATION = 10000.0
-# How quickly the player reaches the target speed when pressing left/right.
-# Higher value = reaches full speed faster.
+# Rate of increasing velocity toward target speed.
 
 const DECELERATION = 3500.0
-# How quickly the player slows down when no movement key is pressed.
+# Rate of slowing down when no input is provided.
 
 
 # =========================
 # JUMP CONSTANTS
 # =========================
 const JUMP_VELOCITY = -1000.0
-# The upward velocity applied when jumping.
-# Negative because in Godot, upward movement is negative Y.
+# Instant upward force applied when jumping.
 
 const JUMP_CUT_MULTIPLIER = 1.1
-# Intended to shorten jump height if the jump button is released early.
-# (Currently not used because that line is commented out later.)
+# Reserved variable for scaling upward velocity when jump is released early.
+# Currently unused because a direct velocity override is used instead.
 
 
 # =========================
 # GRAVITY MODIFIERS
 # =========================
 const FALL_GRAVITY_MULTIPLIER = 3
-# Multiplies gravity when falling downward to make falls faster/snappier.
+# Makes falling feel heavier and faster than rising.
+# Improves responsiveness and platformer feel.
 
 const LOW_JUMP_GRAVITY_MULTIPLIER = 5
-# Multiplies gravity when jump is released early, creating shorter jumps.
+# Makes short hops possible when releasing jump early.
 
 
 # =========================
 # DYNAMIC MODIFIERS (change during gameplay)
 # =========================
 var speedMultiplier := 1.0
-# Multiplies horizontal speed. Used by power-ups to slow or boost movement.
+# Multiplies final horizontal speed.
+# Used by abilities to slow or alter mobility.
 
 var gravityMultiplier := 1.0
-# Multiplies gravity strength. Used by heavy mode or power-ups.
+# Multiplies gravity strength dynamically.
+# Used for slam ability or float effects.
 
 
 # =========================
 # MATERIAL ENUM
 # =========================
 enum Mat {STONE, AMBER, LAPIS, EMERALD}
-# Creates a list of named constants representing player material types.
-# These act like different "forms" with unique abilities.
+# Defines material IDs as integers internally:
+# STONE   = 0
+# AMBER   = 1
+# LAPIS   = 2
+# EMERALD = 3
+# Using enum improves readability and prevents magic numbers.
 
 
 @export var currentMat = Mat.STONE
-# The player's current material.
-# @export allows you to change it from the Godot editor.
+# Tracks the currently active material.
+# Determines ability behavior, resistances, and visuals.
 
 
 # =========================
 # POWER STATE VARIABLES
 # =========================
 var heavy = false
-# True when the player is in heavy mode (STONE ability).
-# Heavy mode increases gravity to slam downward faster.
+# True only during STONE slam ability.
+# Used by breakable floors to detect slam impact.
 
 var flameOn = false
-# True when AMBER flame ability is active.
+# True while AMBER flame ability is active.
+# Enables flame collision and visuals.
 
 var flameTime = 3
-# Remaining time for flame ability (seconds).
+# Remaining flame duration countdown timer.
 
 const flameMax = 3
-# Maximum flame duration (used to reset flameTime).
+# Used to reset flameTime after cooldown ends.
 
-var burning = false
-# True when flame touches something burnable (like plants).
+
+var GrowOn = false
+# True while EMERALD growth ability is active.
+# Enables growth collision and visuals.
+
+var GrowTime = 3
+# Remaining growth ability duration timer.
+
+const GrowMax = 3
+# Reserved maximum duration for growth ability reset.
+
 
 var cooldown = 0
-# Current cooldown timer remaining.
+# Remaining cooldown time before next ability use allowed.
 
 var onCooldown = false
-# True when abilities cannot be used.
+# Prevents abilities from being spammed.
 
 const cooldownMax = 6
-# Maximum cooldown duration (seconds).
+# Total cooldown duration after using an ability.
 
 
 # =========================
 # MATERIAL DETECTION FLAGS
 # =========================
 var checkStone = false
-# True when player is touching a stone material zone.
+# True while overlapping a stone material zone Area2D.
 
 var checkLapis = false
-# True when player is touching a lapis material zone.
+# True while overlapping lapis zone.
 
 var checkEmerald = false
-# True when player is touching an emerald material zone.
+# True while overlapping emerald zone.
 
 var checkAmber = false
-# True when player is touching an amber material zone.
+# True while overlapping amber zone.
 
 
 var inLava = false
-# True if the player is inside lava.
-# Used to kill the player unless protected by flame.
+# True while physically inside lava Area2D.
+# Used to determine whether player should die when protection ends.
 
 
 # =========================
@@ -118,138 +134,198 @@ var inLava = false
 # =========================
 func _reload_scene():
 	get_tree().reload_current_scene()
-	# Reloads the current level.
-	# Used for death or manual reset.
+	# Reloads entire scene instantly.
+	# Used for death, reset, or failure states.
 
 
 # =========================
 # COLOR CHANGE FUNCTION
 # =========================
 func _color_change():
-	# Changes the player's sprite color depending on current material
-	# or detected nearby material.
+
+	# This function prioritizes ANY detected material OR current material.
+	# Because these are separate IF statements (not elif),
+	# the LAST matching condition determines final color.
 
 	if checkStone == true or currentMat == Mat.STONE:
 		$Sprite2D.modulate = Color.WHITE
-		# Stone material = white color.
 
 	if checkAmber == true or currentMat == Mat.AMBER:
 		$Sprite2D.modulate = Color.ORANGE
-		# Amber material = orange color.
 
 	if checkLapis == true or currentMat == Mat.LAPIS:
 		$Sprite2D.modulate = Color.BLUE
-		# Lapis material = blue color.
 
 	if checkEmerald == true or currentMat == Mat.EMERALD:
 		$Sprite2D.modulate = Color.GREEN
-		# Emerald material = green color.
 
 
 # =========================
 # MAIN PHYSICS LOOP
-# Runs every physics frame (~60 times per second)
 # =========================
 func _physics_process(delta):
 
 	_color_change()
-	# Always update sprite color based on material.
+	# Ensures material color updates immediately if material changes mid-frame.
 
 
 	# =========================
 	# COOLDOWN TIMER
 	# =========================
 	if onCooldown:
+
 		cooldown -= delta
-		# Reduce cooldown timer over time.
+		# Countdown happens in real-time seconds.
 
 		if cooldown <= 0:
+
 			onCooldown = false
+			# Player can use abilities again.
+
 			cooldown = 0
+			# Prevent negative timer values.
+
 			flameTime = flameMax
-			# When cooldown ends, allow abilities again
-			# and reset flame duration.
+			# Reset flame duration ready for next use.
+			# (Note: GrowTime reset is not here, so growth depends on initial value)
 
 
 	# =========================
 	# FLAME STATE CONTROL
 	# =========================
 	if flameOn:
+
 		flameTime -= delta
-		# Reduce flame duration.
+		# Counts down ability duration.
 
 		$Flame/Sprite2Dx.visible = true
-		# Show flame visual effect.
+		# Enables visual indicator of flame ability.
 
 		$Flame/CollisionShape2D.disabled = false
-		# Enable flame collision so it can burn objects.
+		# Enables Area2D collision used to burn plants or interact with objects.
 
 	else:
+
 		$Flame/Sprite2Dx.visible = false
-		# Hide flame visuals.
 
 		$Flame/CollisionShape2D.disabled = true
-		# Disable flame collision.
+		# Prevents unintended burning when flame inactive.
 
 
+	# =========================
+	# GROWTH STATE CONTROL
+	# =========================
+	if GrowOn:
+
+		GrowTime -= delta
+		# Countdown for emerald growth ability.
+
+		$Growth/Sprite2Dx.visible = true
+		# Shows growth visual effect.
+
+		$Growth/CollisionShape2D.disabled = false
+		# Enables growth interaction collider.
+
+	else:
+
+		$Growth/Sprite2Dx.visible = false
+
+		$Growth/CollisionShape2D.disabled = true
+
+
+	# =========================
+	# ABILITY EXPIRATION
+	# =========================
 	if flameTime <= 0:
-		# Flame expired.
 
 		flameOn = false
 		speedMultiplier = 1
 		gravityMultiplier = 1
 		currentMat = Mat.STONE
-		# Reset player to default stone state.
+		# Player always reverts to default stone state after ability ends.
+
+
+	if GrowTime <= 0:
+
+		GrowOn = false
+		speedMultiplier = 1
+		gravityMultiplier = 1
+		currentMat = Mat.STONE
 
 		if inLava == true:
+			# Important safety mechanic:
+			# If player was surviving lava only due to ability,
+			# losing ability instantly kills them.
 			call_deferred("_reload_scene")
-			# If in lava without flame protection, reload scene (player dies).
 
 
 	# =========================
 	# POWER-UP ABILITY LOGIC
 	# =========================
 	var gravity = get_gravity()
-	# Gets the default gravity value from project settings.
+	# Retrieves project gravity setting dynamically.
+	# Allows global gravity changes without modifying script.
 
 
 	if currentMat == Mat.STONE:
-		# Stone ability = heavy slam
 
 		if Input.is_action_just_pressed("power") and not is_on_floor() and not onCooldown:
+
 			onCooldown = true
 			cooldown = cooldownMax
+
 			gravityMultiplier = 5.0
-			# Increase gravity massively to fall faster.
+			# Massive gravity increase creates slam effect.
 
 			heavy = true
-			# Mark heavy mode active.
+			# Used by breakable floors to detect slam state.
 
 
 	if currentMat == Mat.AMBER:
-		# Amber ability = flame mode
 
 		if Input.is_action_just_pressed("power") and not onCooldown:
+
 			onCooldown = true
 			cooldown = cooldownMax
 
 			flameOn = true
-			# Activate flame ability.
 
 			speedMultiplier = 0.5
-			# Reduce speed while flaming.
+			# Slows player to balance offensive ability.
 
 			gravityMultiplier = 0.5
-			# Reduce gravity for floaty feel.
+			# Creates floatier movement feeling.
 
 			print("FLAME ON!!!")
-			# Debug message.
 
 
-	# Reset heavy mode when landing
+	if currentMat == Mat.EMERALD:
+
+		if Input.is_action_just_pressed("power") and not onCooldown:
+
+			onCooldown = true
+			cooldown = cooldownMax
+
+			GrowOn = true
+			# Enables growth interaction system.
+
+			speedMultiplier = 0.5
+
+			gravityMultiplier = 0.5
+
+			print("GOING GREEN")
+
+
+	# =========================
+	# HEAVY RESET
+	# =========================
 	if heavy == true and is_on_floor():
+
 		gravityMultiplier = 1.0
+		# Restore normal gravity once slam finishes.
+
 		heavy = false
+		# Prevents permanent heavy state.
 
 
 	# =========================
@@ -258,15 +334,15 @@ func _physics_process(delta):
 	if not is_on_floor():
 
 		if velocity.y > 0:
-			# Falling downward
+			# Falling
 			velocity += (gravity * gravityMultiplier) * FALL_GRAVITY_MULTIPLIER * delta
 
 		elif not Input.is_action_pressed("jump"):
-			# Jump released early (short hop)
+			# Jump released early
 			velocity += gravity * LOW_JUMP_GRAVITY_MULTIPLIER * delta
 
 		else:
-			# Normal upward movement
+			# Rising normally
 			velocity += gravity * delta
 
 
@@ -274,15 +350,14 @@ func _physics_process(delta):
 	# JUMP INPUT
 	# =========================
 	if Input.is_action_just_pressed("jump") and is_on_floor():
+
 		velocity.y = JUMP_VELOCITY
-		# Apply upward force.
 
 
 	if Input.is_action_just_released("jump") and velocity.y < 0:
-		# Stops upward motion quickly when jump released.
-		# This creates variable jump height.
 
-		#velocity.y *= JUMP_CUT_MULTIPLIER
+		# Immediately cancels upward velocity.
+		# This creates sharp, responsive short jumps.
 		velocity.y = 1
 
 
@@ -290,23 +365,16 @@ func _physics_process(delta):
 	# HORIZONTAL MOVEMENT
 	# =========================
 	var direction := Input.get_axis("left", "right")
-	# Returns:
-	# -1 if pressing left
-	# +1 if pressing right
-	# 0 if neither
-
 
 	if direction != 0:
 
 		var targetSpeed = direction * (SPEED * speedMultiplier)
-		# Calculate desired speed based on input and modifiers.
 
 		velocity.x = move_toward(
 			velocity.x,
 			targetSpeed,
 			ACCELERATION * delta
 		)
-		# Smoothly accelerate toward target speed.
 
 	else:
 
@@ -315,21 +383,23 @@ func _physics_process(delta):
 			0,
 			DECELERATION * delta
 		)
-		# Smoothly slow to stop.
 
 
 	# =========================
 	# RESET INPUT
 	# =========================
 	if Input.is_action_just_pressed("reset"):
+
 		call_deferred("_reload_scene")
-		# Reload scene manually.
 
 
 	# =========================
 	# MATERIAL SWITCH INPUT
 	# =========================
 	if Input.is_action_just_pressed("switch"):
+
+		# Player switches to whichever material zone they are currently touching.
+		# Multiple zones overlapping means last condition wins.
 
 		if checkStone == true:
 			currentMat = Mat.STONE
@@ -346,15 +416,13 @@ func _physics_process(delta):
 		if checkAmber == true:
 			currentMat = Mat.AMBER
 			_color_change()
-		# Switch to whichever material zone the player is touching.
 
 
 	# =========================
-	# FINAL MOVEMENT EXECUTION
+	# FINAL PHYSICS MOVE
 	# =========================
 	move_and_slide()
-	# Moves the character using velocity and handles collisions automatically.
-
+	# Applies velocity, handles collisions, sliding, and floor detection.
 
 
 # =========================
@@ -362,9 +430,10 @@ func _physics_process(delta):
 # =========================
 func _on_mat_check_area_entered(area):
 
+	# These detect proximity to material shrines, crystals, or zones.
+
 	if area.is_in_group("stone"):
 		checkStone = true
-		# Player entered stone material area.
 
 	if area.is_in_group("lapis"):
 		checkLapis = true
@@ -380,7 +449,6 @@ func _on_mat_check_area_exited(area):
 
 	if area.is_in_group("stone"):
 		checkStone = false
-		# Player left stone area.
 
 	if area.is_in_group("lapis"):
 		checkLapis = false
@@ -394,18 +462,8 @@ func _on_mat_check_area_exited(area):
 
 # =========================
 # READY FUNCTION
-# Runs once when node enters scene
 # =========================
 func _ready() -> void:
+
 	_color_change()
-	# Ensures correct color at game start.
-
-
-# =========================
-# FLAME COLLISION SIGNAL
-# =========================
-func _on_flame_area_entered(area):
-
-	if area.is_in_group("plant"):
-		burning = true
-		# Marks plant as burning when flame touches it.
+	# Ensures correct visual state immediately when scene loads.

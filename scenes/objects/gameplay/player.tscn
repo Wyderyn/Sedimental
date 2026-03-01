@@ -27,6 +27,18 @@ texture = ExtResource("2_i3pqv")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Flame"]
 shape = SubResource("CircleShape2D_ovgbp")
 
+[node name="Growth" type="Area2D" parent="." groups=["emerald"]]
+
+[node name="Sprite2Dx" type="Sprite2D" parent="Growth"]
+visible = false
+modulate = Color(0, 18.892157, 0, 1)
+position = Vector2(-0.49999475, 0.4999962)
+scale = Vector2(1.6953125, 1.5546874)
+texture = ExtResource("2_i3pqv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Growth" groups=["emerald"]]
+shape = SubResource("CircleShape2D_ovgbp")
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_i3pqv")
 

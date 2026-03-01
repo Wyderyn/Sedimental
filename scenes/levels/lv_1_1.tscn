@@ -1,9 +1,11 @@
-[gd_scene load_steps=7 format=3 uid="uid://bx71objn32bcv"]
+[gd_scene load_steps=9 format=3 uid="uid://bx71objn32bcv"]
 
 [ext_resource type="PackedScene" uid="uid://bylp2tvf6hcn4" path="res://scenes/objects/enviornment/floor.tscn" id="1_lq5cr"]
 [ext_resource type="PackedScene" uid="uid://lfthqtfbkxtk" path="res://scenes/objects/enviornment/wall.tscn" id="2_cechb"]
 [ext_resource type="PackedScene" uid="uid://foswobgwptd4" path="res://scenes/objects/gameplay/exit.tscn" id="3_dqr0b"]
+[ext_resource type="PackedScene" uid="uid://bis5afaf4y8ik" path="res://scenes/objects/enviornment/plant.tscn" id="3_qsgtp"]
 [ext_resource type="PackedScene" uid="uid://ckudr8chj1kgo" path="res://scenes/objects/gameplay/player.tscn" id="4_qsgtp"]
+[ext_resource type="PackedScene" uid="uid://daydh88igmh1y" path="res://scenes/objects/gameplay/emerald_piece.tscn" id="4_se6fr"]
 
 [sub_resource type="Environment" id="Environment_bdf7w"]
 
@@ -65,6 +67,12 @@ position = Vector2(1754, 1457)
 
 [node name="Wall2" parent="WorldEnvironment" instance=ExtResource("2_cechb")]
 position = Vector2(-436, 1377.9999)
+
+[node name="plant" parent="WorldEnvironment" instance=ExtResource("3_qsgtp")]
+position = Vector2(1634, 1014)
+
+[node name="emerald_piece" parent="WorldEnvironment" instance=ExtResource("4_se6fr")]
+position = Vector2(169, 929)
 
 [node name="Exit" parent="." instance=ExtResource("3_dqr0b")]
 position = Vector2(868, 469)
