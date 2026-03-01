@@ -7,7 +7,6 @@ size = Vector2(148, 140)
 
 [node name="lapis_peice" type="Sprite2D"]
 modulate = Color(0.34174308, 0.22217554, 1, 1)
-scale = Vector2(2, 2)
 texture = ExtResource("1_u82fj")
 
 [node name="Area2D" type="Area2D" parent="." groups=["lapis"]]

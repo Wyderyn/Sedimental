@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c42rlp8a63fso"
-path="res://.godot/imported/Geo(Amber).png-f311e9bee4b9eda5ad563e9ad4ee078d.ctex"
+uid="uid://ijuyujtfig26"
+path="res://.godot/imported/Geo(Stone) (1).png-7a6b2c1dcce6df49fc5ebd584196020b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/Player/Geo(Amber).png"
-dest_files=["res://.godot/imported/Geo(Amber).png-f311e9bee4b9eda5ad563e9ad4ee078d.ctex"]
+source_file="res://sprites/Player/Geo(Stone) (1).png"
+dest_files=["res://.godot/imported/Geo(Stone) (1).png-7a6b2c1dcce6df49fc5ebd584196020b.ctex"]
 
 [params]
 

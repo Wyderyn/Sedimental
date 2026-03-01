@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bx71objn32bcv"]
+[gd_scene load_steps=11 format=3 uid="uid://bx71objn32bcv"]
 
 [ext_resource type="PackedScene" uid="uid://bylp2tvf6hcn4" path="res://scenes/objects/enviornment/floor.tscn" id="1_lq5cr"]
 [ext_resource type="PackedScene" uid="uid://lfthqtfbkxtk" path="res://scenes/objects/enviornment/wall.tscn" id="2_cechb"]
@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://bis5afaf4y8ik" path="res://scenes/objects/enviornment/plant.tscn" id="3_qsgtp"]
 [ext_resource type="PackedScene" uid="uid://ckudr8chj1kgo" path="res://scenes/objects/gameplay/player.tscn" id="4_qsgtp"]
 [ext_resource type="PackedScene" uid="uid://daydh88igmh1y" path="res://scenes/objects/gameplay/emerald_piece.tscn" id="4_se6fr"]
+[ext_resource type="PackedScene" uid="uid://bvfkpidksxqom" path="res://scenes/objects/gameplay/lapis_peice.tscn" id="7_se6fr"]
+[ext_resource type="PackedScene" uid="uid://dtuejeb01c7eq" path="res://scenes/objects/gameplay/amber_piece.tscn" id="8_rbg4q"]
 
 [sub_resource type="Environment" id="Environment_bdf7w"]
 
@@ -18,7 +20,7 @@ environment = SubResource("Environment_bdf7w")
 camera_attributes = SubResource("CameraAttributesPractical_1e78s")
 
 [node name="Floor" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
-position = Vector2(238.99998, -220.00002)
+position = Vector2(262, 55.999985)
 scale = Vector2(2.8470488, 1.3752949)
 
 [node name="Floor11" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
@@ -26,7 +28,7 @@ position = Vector2(-1109, -231)
 scale = Vector2(2.8470488, 1.3752949)
 
 [node name="Floor4" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
-position = Vector2(1710.0001, -218)
+position = Vector2(1705, 44)
 scale = Vector2(2.8470488, 1.3752949)
 
 [node name="Floor2" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
@@ -34,27 +36,27 @@ position = Vector2(554, 1544)
 scale = Vector2(2.8470488, 1.3752949)
 
 [node name="Floor12" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
-position = Vector2(-947, 1548)
+position = Vector2(-946.99994, 1543)
 scale = Vector2(2.8470488, 1.3752949)
 
 [node name="Floor5" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
-position = Vector2(477.99997, 1393)
-scale = Vector2(1.4548353, 2.594745)
+position = Vector2(483, 1439.0001)
+scale = Vector2(0.8586109, 2.3339238)
 
 [node name="Floor7" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
-position = Vector2(858.99994, 277.99997)
+position = Vector2(876.99994, 724)
 scale = Vector2(0.5479812, 1.5147476)
 
 [node name="Floor8" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
-position = Vector2(1202, 421)
+position = Vector2(1321, 835)
 scale = Vector2(0.4694505, 1.8880689)
 
 [node name="Floor9" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
-position = Vector2(1596, 619)
-scale = Vector2(1.196346, 1.7027843)
+position = Vector2(1821, 1024)
+scale = Vector2(0.822175, 1.7715423)
 
 [node name="Floor6" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
-position = Vector2(-668.00006, 738)
+position = Vector2(-172.00002, 913)
 scale = Vector2(0.67007935, 1.5147476)
 
 [node name="Floor10" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
@@ -62,39 +64,49 @@ position = Vector2(447.99997, 532)
 scale = Vector2(0.67007935, 1.5147476)
 
 [node name="Floor3" parent="WorldEnvironment" instance=ExtResource("1_lq5cr")]
-position = Vector2(2020, 1532)
+position = Vector2(2038, 1543)
 scale = Vector2(2.8470488, 1.3752949)
 
 [node name="Wall" parent="WorldEnvironment" instance=ExtResource("2_cechb")]
-position = Vector2(-863, 356)
+position = Vector2(-412, 388)
 scale = Vector2(-0.9272717, 8.32394)
 
 [node name="Wall3" parent="WorldEnvironment" instance=ExtResource("2_cechb")]
-position = Vector2(2504, 385)
+position = Vector2(2251, 436)
 scale = Vector2(-0.9272717, 8.32394)
 
 [node name="Wall5" parent="WorldEnvironment" instance=ExtResource("2_cechb")]
-position = Vector2(682.0001, 132.00003)
+position = Vector2(700, 421)
 scale = Vector2(-0.9272717, 8.32394)
 
 [node name="Wall4" parent="WorldEnvironment" instance=ExtResource("2_cechb")]
-position = Vector2(2529, 1449)
+position = Vector2(2249, 1482)
 scale = Vector2(-0.9240833, 8.32394)
 
 [node name="Wall2" parent="WorldEnvironment" instance=ExtResource("2_cechb")]
-position = Vector2(-865, 1408)
+position = Vector2(-406, 1385)
 scale = Vector2(-0.9272717, 8.32394)
 
 [node name="plant" parent="WorldEnvironment" instance=ExtResource("3_qsgtp")]
-position = Vector2(2208, 1335)
+position = Vector2(2010, 1363)
 scale = Vector2(3.9408274, 2.9498153)
 
 [node name="emerald_piece" parent="WorldEnvironment" instance=ExtResource("4_se6fr")]
-position = Vector2(507, 1255)
+z_index = -1
+position = Vector2(507, 1347)
 
 [node name="Exit" parent="." instance=ExtResource("3_dqr0b")]
-position = Vector2(872, 139)
+z_index = -1
+position = Vector2(923, 635)
 
 [node name="Player" parent="." instance=ExtResource("4_qsgtp")]
-position = Vector2(-345, 1372)
+position = Vector2(0, 1390)
 currentMat = 1
+
+[node name="lapis_peice" parent="." instance=ExtResource("7_se6fr")]
+z_index = -1
+position = Vector2(-156, 813)
+
+[node name="amber_piece" parent="lapis_peice" instance=ExtResource("8_rbg4q")]
+z_index = -1
+position = Vector2(597, -369)

@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://80kl10p8d3vr" path="res://scripts/player.gd" id="1_onrkg"]
 [ext_resource type="Texture2D" uid="uid://4q335xxs2p" path="res://sprites/icon.svg" id="2_i3pqv"]
-[ext_resource type="Texture2D" uid="uid://d0w2sghu71gnc" path="res://sprites/Player/Geo(Stone).png" id="3_3l4b8"]
+[ext_resource type="Texture2D" uid="uid://ijuyujtfig26" path="res://sprites/Player/Geo(Stone) (1).png" id="3_htio6"]
 [ext_resource type="Script" uid="uid://cho4hpvdpbjib" path="res://scenes/objects/gameplay/camera_2d.gd" id="4_htio6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ovgbp"]
@@ -15,12 +15,14 @@ size = Vector2(71, 119)
 radius = 68.18358
 
 [node name="Player" type="CharacterBody2D" groups=["player"]]
-scale = Vector2(0.5, 0.5)
+scale = Vector2(1.5, 1.5)
 script = ExtResource("1_onrkg")
-JUMP_VELOCITY = -1550.0
+SPEED = 800.0
+JUMP_VELOCITY = -1010.0
 
 [node name="Flame" type="Area2D" parent="." groups=["amber"]]
-scale = Vector2(3, 3)
+position = Vector2(-2, 0)
+scale = Vector2(0.5, 0.5)
 
 [node name="Sprite2Dx" type="Sprite2D" parent="Flame"]
 visible = false
@@ -33,7 +35,6 @@ texture = ExtResource("2_i3pqv")
 shape = SubResource("CircleShape2D_ovgbp")
 
 [node name="Growth" type="Area2D" parent="." groups=["emerald"]]
-scale = Vector2(3, 3)
 
 [node name="Sprite2Dx" type="Sprite2D" parent="Growth"]
 visible = false
@@ -43,18 +44,18 @@ scale = Vector2(1.6953125, 1.5546874)
 texture = ExtResource("2_i3pqv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Growth" groups=["emerald"]]
+scale = Vector2(0.5, 0.5)
 shape = SubResource("CircleShape2D_ovgbp")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 2
 texture_repeat = 1
-position = Vector2(0, -25)
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("3_3l4b8")
+position = Vector2(0, -1)
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("3_htio6")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-1, 7)
-scale = Vector2(5, 5)
+position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_hqtel")
 
 [node name="MatCheck" type="Area2D" parent="."]
@@ -63,7 +64,7 @@ shape = SubResource("RectangleShape2D_hqtel")
 shape = SubResource("CircleShape2D_onrkg")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.5, 0.5)
+zoom = Vector2(0.75, 0.75)
 drag_horizontal_enabled = true
 drag_vertical_enabled = true
 drag_vertical_offset = -1.0

@@ -62,8 +62,8 @@ enum Mat {STONE, AMBER, LAPIS, EMERALD}
 # LAPIS   = 2
 # EMERALD = 3
 # Using enum improves readability and prevents magic numbers.
-
-
+enum Facing {LEFT, RIGHT}
+@export var isFacing = Facing.RIGHT
 @export var currentMat = Mat.STONE
 # Tracks the currently active material.
 # Determines ability behavior, resistances, and visuals.
@@ -148,16 +148,16 @@ func _color_change():
 	# the LAST matching condition determines final color.
 
 	if checkStone == true or currentMat == Mat.STONE:
-		$Sprite2D.modulate = Color.WHITE
+		$Sprite2D.texture = load("res://sprites/Player/Geo(Stone) (1).png")
 
 	if checkAmber == true or currentMat == Mat.AMBER:
-		$Sprite2D.modulate = Color.ORANGE
+		$Sprite2D.texture = load("res://sprites/Player/Geo(Amber) (1).png")
 
 	if checkLapis == true or currentMat == Mat.LAPIS:
-		$Sprite2D.modulate = Color.BLUE
+		$Sprite2D.texture = load("res://sprites/Player/Geo(Lapis) (1).png")
 
 	if checkEmerald == true or currentMat == Mat.EMERALD:
-		$Sprite2D.modulate = Color.GREEN
+		$Sprite2D.texture = load("res://sprites/Player/Geo(Emerald) (1).png")
 
 
 # =========================
@@ -167,9 +167,12 @@ func _physics_process(delta):
 
 	_color_change()
 	# Ensures material color updates immediately if material changes mid-frame.
+	if Input.is_action_pressed("right"): 
+		isFacing = Facing.RIGHT
+	elif Input.is_action_pressed("left"): 
+		isFacing = Facing.LEFT
 
-
-	# =========================
+	$Sprite2D.flip_h = isFacing == Facing.LEFT
 	# COOLDOWN TIMER
 	# =========================
 	if onCooldown:
@@ -364,6 +367,7 @@ func _physics_process(delta):
 	# =========================
 	# HORIZONTAL MOVEMENT
 	# =========================
+
 	var direction := Input.get_axis("left", "right")
 
 	if direction != 0:
@@ -383,6 +387,7 @@ func _physics_process(delta):
 			0,
 			DECELERATION * delta
 		)
+
 
 
 	# =========================

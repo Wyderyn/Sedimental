@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dxb3bscx6nnpu"
-path="res://.godot/imported/Geo(Emerald).png-7a43c2ce0802616ffc43d8fb0cb02c93.ctex"
+uid="uid://den7aseb1awvq"
+path="res://.godot/imported/Geo(Lapis) (1).png-1aefa7dda32b2fe4a7cce5fe947e81fe.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://sprites/Player/Geo(Emerald).png"
-dest_files=["res://.godot/imported/Geo(Emerald).png-7a43c2ce0802616ffc43d8fb0cb02c93.ctex"]
+source_file="res://sprites/Player/Geo(Lapis) (1).png"
+dest_files=["res://.godot/imported/Geo(Lapis) (1).png-1aefa7dda32b2fe4a7cce5fe947e81fe.ctex"]
 
 [params]
 
